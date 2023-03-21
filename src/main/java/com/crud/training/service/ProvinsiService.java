@@ -2,7 +2,6 @@ package com.crud.training.service;
 
 import com.crud.training.model.database.Provinsi;
 import com.crud.training.repository.ProvinsiRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -12,7 +11,6 @@ import java.util.List;
 public class ProvinsiService {
   private final ProvinsiRepository provinsiRepository;
 
-  @Autowired
   public ProvinsiService(ProvinsiRepository provinsiRepository) {
     this.provinsiRepository = provinsiRepository;
   }
@@ -39,7 +37,7 @@ public class ProvinsiService {
   }
 
   private void validateProvinsiName(String name) throws Exception {
-    if (StringUtils.isEmpty(name)) {
+    if (!StringUtils.hasText(name)) {
       throw new Exception("Provinsi name must not be empty");
     }
   }
