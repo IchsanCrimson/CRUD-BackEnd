@@ -4,7 +4,6 @@ import com.crud.training.model.request.KabupatenRequest;
 import com.crud.training.model.response.KabupatenInfoResponse;
 import com.crud.training.model.response.KabupatenResponse;
 import com.crud.training.service.KabupatenService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,13 +27,12 @@ import java.util.stream.Collectors;
 public class KabupatenController {
   private final KabupatenService kabupatenService;
 
-  @Autowired
   public KabupatenController(KabupatenService kabupatenService) {
     this.kabupatenService = kabupatenService;
   }
 
   @GetMapping("/getAllWithProvinsiId")
-  public ResponseEntity getKabupatenList(
+  public ResponseEntity<List<KabupatenResponse>> getKabupatenList(
       @RequestParam Long provinsiId) {
     List<KabupatenResponse> kabupatenResponseList = kabupatenService.getKabupatenList(provinsiId).stream()
         .map(kabupaten -> new KabupatenResponse(kabupaten.getKabupaten_id(), kabupaten.getName()))
@@ -46,7 +44,7 @@ public class KabupatenController {
   }
 
   @GetMapping("/{kabupatenId}/info")
-  public ResponseEntity getKabupatenInfo(
+  public ResponseEntity<KabupatenInfoResponse> getKabupatenInfo(
       @PathVariable Long kabupatenId) {
     KabupatenInfoResponse kabupatenInfoResponse = Optional.ofNullable(kabupatenService.getKabupaten(kabupatenId))
         .map(kabupaten -> new KabupatenInfoResponse(
@@ -62,7 +60,7 @@ public class KabupatenController {
   }
 
   @PostMapping("/create")
-  public ResponseEntity addKabupaten(
+  public ResponseEntity<String> addKabupaten(
       @RequestBody KabupatenRequest kabupatenRequest) {
     try {
       kabupatenService.addKabupaten(
@@ -71,7 +69,7 @@ public class KabupatenController {
 
       return ResponseEntity
           .status(HttpStatus.OK)
-          .body(Boolean.TRUE);
+          .body(String.valueOf(Boolean.TRUE));
     } catch (Exception e) {
       return ResponseEntity
           .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -80,7 +78,7 @@ public class KabupatenController {
   }
 
   @PutMapping("/{kabupatenId}/update")
-  public ResponseEntity updateKabupaten(
+  public ResponseEntity<String> updateKabupaten(
       @PathVariable Long kabupatenId,
       @RequestBody KabupatenRequest kabupatenRequest) {
     try {
@@ -91,7 +89,7 @@ public class KabupatenController {
 
       return ResponseEntity
           .status(HttpStatus.OK)
-          .body(updateStatus);
+          .body(String.valueOf(updateStatus));
     } catch (Exception e) {
       return ResponseEntity
           .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -100,13 +98,13 @@ public class KabupatenController {
   }
 
   @DeleteMapping("/{kabupatenId}/delete")
-  public ResponseEntity deleteKabupaten(
+  public ResponseEntity<String> deleteKabupaten(
       @PathVariable Long kabupatenId) {
     try {
       kabupatenService.deleteKabupaten(kabupatenId);
       return ResponseEntity
           .status(HttpStatus.OK)
-          .body(Boolean.TRUE);
+          .body(String.valueOf(Boolean.TRUE));
     } catch (Exception e) {
       return ResponseEntity
           .status(HttpStatus.INTERNAL_SERVER_ERROR)

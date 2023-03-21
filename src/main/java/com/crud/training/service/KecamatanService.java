@@ -3,7 +3,6 @@ package com.crud.training.service;
 import com.crud.training.model.database.Kecamatan;
 import com.crud.training.model.database.Kabupaten;
 import com.crud.training.repository.KecamatanRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -16,7 +15,6 @@ public class KecamatanService {
 
   private final KabupatenService kabupatenService;
 
-  @Autowired
   public KecamatanService(KecamatanRepository kecamatanRepository, KabupatenService kabupatenService) {
     this.kecamatanRepository = kecamatanRepository;
     this.kabupatenService = kabupatenService;
@@ -49,7 +47,7 @@ public class KecamatanService {
       throw new Exception("Kabupaten id must not be empty");
     }
 
-    if (StringUtils.isEmpty(kecamatanName)) {
+    if (!StringUtils.hasText(kecamatanName)) {
       throw new Exception("Kecamatan name must not be empty");
     }
   }
@@ -65,19 +63,15 @@ public class KecamatanService {
   }
 
   private Kecamatan updateKecamatanValue(Kecamatan kecamatan, String name, Long kabupatenId) throws RuntimeException {
-    if(!StringUtils.isEmpty(name)) {
-      kecamatan.setName(name);
-    }
+    kecamatan.setName(name);
 
-    if(Objects.nonNull(kabupatenId)) {
-      Kabupaten kabupaten = kabupatenService.getKabupaten(kabupatenId);
+    Kabupaten kabupaten = kabupatenService.getKabupaten(kabupatenId);
 
-      if (Objects.nonNull(kabupaten)) {
-        kecamatan.setKabupaten(kabupaten);
-      } else {
-        throw new RuntimeException("Kabupaten with id: " + kabupatenId + " not found");
-      }
-    }
+    if (Objects.nonNull(kabupaten)) {
+      kecamatan.setKabupaten(kabupaten);
+    } else {
+      throw new RuntimeException("Kabupaten with id: " + kabupatenId + " not found");
+    }  
 
     return kecamatan;
   }
