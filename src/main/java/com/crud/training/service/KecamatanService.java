@@ -21,7 +21,7 @@ public class KecamatanService {
   }
 
   public List<Kecamatan> getKecamatanList(Long kabupatenId) {
-    return kecamatanRepository.findAllKecamatanByKabupatenId(kabupatenId);
+    return kecamatanRepository.findAllKecamatanByKabupatenIdOrderByNameAsc(kabupatenId);
   }
 
   public Kecamatan getKecamatan(Long kecamatanId) {

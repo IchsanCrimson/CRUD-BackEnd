@@ -2,6 +2,8 @@ package com.crud.training.service;
 
 import com.crud.training.model.database.Provinsi;
 import com.crud.training.repository.ProvinsiRepository;
+
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -11,12 +13,14 @@ import java.util.List;
 public class ProvinsiService {
   private final ProvinsiRepository provinsiRepository;
 
+  private final String provinsiName = "name";
+
   public ProvinsiService(ProvinsiRepository provinsiRepository) {
     this.provinsiRepository = provinsiRepository;
   }
 
   public List<Provinsi> getAllProvinsiList() {
-    return provinsiRepository.findAll();
+    return provinsiRepository.findAll(Sort.by(Sort.Direction.ASC, this.provinsiName));
   }
 
   public void addProvinsi(String newProvinsiName) throws Exception {

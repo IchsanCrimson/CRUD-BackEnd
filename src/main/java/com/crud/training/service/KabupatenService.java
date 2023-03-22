@@ -21,7 +21,7 @@ public class KabupatenService {
   }
 
   public List<Kabupaten> getKabupatenList(Long provinsiId) {
-    return kabupatenRepository.findAllKabupatenByProvinsiId(provinsiId);
+    return kabupatenRepository.findAllKabupatenByProvinsiIdOrderByNameAsc(provinsiId);
   }
 
   public void addKabupaten(Long provinsiId, String kabupatenName) throws Exception {
