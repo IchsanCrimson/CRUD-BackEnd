@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface KecamatanRepository extends JpaRepository<Kecamatan, Long> {
 
-  @Query(value = "SELECT * FROM kecamatan WHERE kecamatan.kabupaten_id = ?1", nativeQuery = true)
-  List<Kecamatan> findAllKecamatanByKabupatenId(Long id);
+  @Query(value = "SELECT * FROM kecamatan WHERE kecamatan.kabupaten_id = ?1 ORDER BY kecamatan.name ASC", nativeQuery = true)
+  List<Kecamatan> findAllKecamatanByKabupatenIdOrderByNameAsc(Long id);
 }
